@@ -12,11 +12,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $users = \App\Models\User::factory(10)
+        ->hasComments(3)
+        ->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $comments = \App\Models\Comment::get();
+
+        foreach($comments as $comment) {
+            \App\Models\Reply::factory(rand(1,3))->create([
+                "comment_id" => $comment->id,
+                "user_id" => rand(1,10)
+            ]);
+        }
     }
 }
